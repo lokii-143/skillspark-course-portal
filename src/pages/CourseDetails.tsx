@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
+import VideoPlayer from '@/components/VideoPlayer';
 import { 
   Play, 
   Clock, 
@@ -22,6 +23,8 @@ const CourseDetails = () => {
   const { id } = useParams();
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [currentLesson, setCurrentLesson] = useState(0);
+  const [showVideoPlayer, setShowVideoPlayer] = useState(false);
+  const [selectedLesson, setSelectedLesson] = useState<string>('');
 
   // Mock course data
   const course = {
@@ -130,6 +133,16 @@ const CourseDetails = () => {
     return total + section.lessons_list.length;
   }, 0);
 
+  const handlePlayLesson = (lessonTitle: string) => {
+    setSelectedLesson(lessonTitle);
+    setShowVideoPlayer(true);
+  };
+
+  const handlePreviewCourse = () => {
+    setSelectedLesson('Course Preview');
+    setShowVideoPlayer(true);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -184,7 +197,11 @@ const CourseDetails = () => {
                     className="w-full h-48 object-cover"
                   />
                   <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                    <Button size="lg" className="bg-white/20 backdrop-blur-sm border border-white/30 text-white hover:bg-white/30">
+                    <Button 
+                      size="lg" 
+                      className="bg-white/20 backdrop-blur-sm border border-white/30 text-white hover:bg-white/30"
+                      onClick={handlePreviewCourse}
+                    >
                       <Play className="h-6 w-6 mr-2" />
                       Preview Course
                     </Button>
@@ -264,6 +281,16 @@ const CourseDetails = () => {
       {/* Course Content */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="lg:pr-80">
+          {/* Video Player */}
+          {showVideoPlayer && (
+            <div className="mb-8">
+              <VideoPlayer 
+                title={selectedLesson}
+                onClose={() => setShowVideoPlayer(false)}
+              />
+            </div>
+          )}
+          
           <Tabs defaultValue="overview" className="w-full">
             <TabsList className="grid w-full grid-cols-4 mb-8">
               <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -342,6 +369,7 @@ const CourseDetails = () => {
                                     variant="ghost"
                                     size="sm"
                                     className="w-6 h-6 p-0"
+                                    onClick={() => handlePlayLesson(lesson.title)}
                                   >
                                     <Play className="h-4 w-4" />
                                   </Button>
