@@ -10,7 +10,7 @@ interface VideoPlayerProps {
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({ 
   title, 
-  videoUrl = "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
+  videoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
   onClose 
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -42,11 +42,11 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
           Your browser does not support the video tag.
         </video>
         
-        {/* Custom overlay for demo purposes */}
-        <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+        {/* Custom overlay for demo purposes - only shows when video is not playing */}
+        <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity pointer-events-none">
           <div className="text-white text-center">
             <div className="text-lg font-semibold mb-2">Sample Course Video</div>
-            <div className="text-sm opacity-80">Click to play the lesson</div>
+            <div className="text-sm opacity-80">Use video controls to play</div>
           </div>
         </div>
       </div>
